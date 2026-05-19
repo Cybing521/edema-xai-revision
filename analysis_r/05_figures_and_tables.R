@@ -3,7 +3,9 @@ load_packages(c("data.table", "ggplot2", "pROC", "fastshap", "scales"))
 `%||%` <- function(a, b) if (!is.null(a) && length(a) == 1 && !is.na(a)) a else b
 
 pred <- fread(file.path(DIR_TABLES, "predictions_mimic_internal_test.csv"))
-classes <- setdiff(names(pred), c("stay_id", "source_database", "edema_etiology", "predicted"))
+meta_cols <- c("stay_id", "source_database", "edema_etiology", "predicted")
+prob_cols <- setdiff(names(pred), meta_cols)
+classes <- sort(unique(c(as.character(pred$edema_etiology), as.character(pred$predicted), prob_cols)))
 pred[, edema_etiology := factor(edema_etiology, levels = classes)]
 pred[, predicted := factor(predicted, levels = classes)]
 
