@@ -1,0 +1,63 @@
+---
+title: "Explainable AI for Edema Etiology: Reproducible Analysis Report"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+source("../analysis_r/00_config.R")
+library(data.table)
+library(knitr)
+```
+
+# Data sources
+
+This analysis uses MIMIC-IV v2.2 and eICU-CRD v2.0 from PhysioNet under credentialed access and data use agreements. Raw patient-level data are not redistributed.
+
+# Cohort construction
+
+```{r cohort}
+paths <- file.path(DIR_TABLES, c("mimic_label_distribution.csv", "eicu_label_distribution.csv"))
+for (p in paths[file.exists(paths)]) {
+  cat("\n\n##", basename(p), "\n")
+  print(kable(fread(p)))
+}
+```
+
+# Model performance
+
+```{r perf}
+p <- file.path(DIR_TABLES, "table3_model_performance_mimic_internal_test.csv")
+if (file.exists(p)) kable(fread(p), digits = 3)
+```
+
+# Figures
+
+## Figure 1. Five-class confusion matrix
+
+```{r fig1, out.width='90%'}
+knitr::include_graphics(file.path(DIR_FIGURES, "figure1_confusion_matrix.png"))
+```
+
+## Figure 2. One-vs-rest ROC curves
+
+```{r fig2, out.width='90%'}
+knitr::include_graphics(file.path(DIR_FIGURES, "figure2_roc.png"))
+```
+
+## Figure 3. SHAP global feature importance
+
+```{r fig3, out.width='90%'}
+knitr::include_graphics(file.path(DIR_FIGURES, "figure3_shap_global_importance.png"))
+```
+
+# Interpretation
+
+The final interpretation must be written only after the real server run completes. This template intentionally does not invent findings before the real outputs exist.
+
+# Reproducibility notes
+
+All figures and tables in this report are generated from the saved prediction tables under `output/tables/` and the model object under `output/models/`.

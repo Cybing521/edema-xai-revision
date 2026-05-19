@@ -1,0 +1,26 @@
+# Raw and derived clinical data (PhysioNet DUA — do not redistribute)
+data/raw/
+data/processed/
+output/
+
+# Local audit / manuscript materials (not part of code release)
+tmp/
+新-返修/
+scripts/
+*.docx
+材料处理清单.md
+代做清单_真实数据R分析.md
+todolist.md
+下一步_需你操作.md
+mimo服务器运行说明.md
+
+# Secrets
+.netrc
+.env
+**/*credentials*
+
+# OS / editor
+.DS_Store
+.Rhistory
+.RData
+.Rproj.user
